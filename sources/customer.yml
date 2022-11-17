@@ -1,0 +1,25 @@
+---
+version: 2
+
+sources:
+  - name: raw
+    description: "RAW data load CSV"
+    tables:
+    - name: raw_customerraw_customer
+      description: RAW - Customer
+      columns:
+        - name: year
+        - name: month
+        - name: day
+        - name: hour
+        - name: party_key
+        - name: given_name
+        - name: last_name
+        - name: middle_name
+        - name: date_of_birth
+        - name: date_of_death
+        - name: gender
+        - name: place_of_birth
+        - name: country_of_residence
+        - name: created_date
+        - name: updated_date

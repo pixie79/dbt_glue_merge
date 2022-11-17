@@ -1,0 +1,30 @@
+version: 2
+
+macros:
+  - name: from_milliseconds
+    description: A macro to convert a LONG millisecond date to yyyy-MM-dd HH:mm:ss
+    arguments:
+      - name: column_name
+        type: string
+        description: The name of the column you want to convert
+  - name: from_current_buckets(year, month, day, hour, minute="00", second="00")
+    description: Allow selection of data based on the INCREMENTAL_DAYS variable from the source bucket partitions
+    arguments:
+      - name: year
+        type: string
+        description: Year from the raw bucket partition "yyyy"
+      - name: month
+        type: string
+        description: Month from the raw bucket partition "MM"
+      - name: day
+        type: string
+        description: Day from the raw bucket partition "dd"
+      - name: hour
+        type: string
+        description: Hour from the raw bucket partition "HH"
+      - name: minute
+        type: string
+        description: Minute from the raw bucket partition "mm"
+      - name: second
+        type: string
+        description: Second from the raw bucket partition "ss"

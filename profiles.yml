@@ -1,0 +1,27 @@
+dbtbase:
+  target: refined
+  outputs:
+   refined:
+      type: glue
+      query-comment: refined-dbt-project
+      role_arn: "arn:aws:iam::{{ env_var('AWS_ACCOUNT_ID') }}:role/{{ env_var('AWS_DBT_ROLE_NAME') }}"
+      region: "{{ env_var('AWS_REGION') }}"
+      workers: "{{ env_var('WORKER_COUNT') | int}}"
+      worker_type: "{{ env_var('WORKER_TYPE') }}"
+      idle_timeout: "{{ env_var('IDLE_TIMEOUT') | int }}"
+      database: refined
+      schema: refined
+      session_provisioning_timeout_in_seconds: "{{ env_var('SESSION_PROVISIONING_TIMEOUT', 240) | int }}"
+      glue_version: "3.0"
+      location: "s3://{{ env_var('AWS_ACCOUNT_ID') }}-{{ env_var('AWS_REGION') }}-data-refined"
+      connections: "awshudiconnector-v10-glue3"
+      default_arguments: "--enable-auto-scaling=true"
+      conf: "spark.serializer=org.apache.spark.serializer.KryoSerializer"
+      extra_jars: "s3://{{ env_var('AWS_ACCOUNT_ID') }}-{{ env_var('AWS_REGION') }}-data-assets/jars/json-serde-1.3.8-jar-with-dependencies.jar,\
+                  s3://{{ env_var('AWS_ACCOUNT_ID') }}-{{ env_var('AWS_REGION') }}-data-assets/jars/calcite-core-1.32.0.jar,\
+                  s3://{{ env_var('AWS_ACCOUNT_ID') }}-{{ env_var('AWS_REGION') }}-data-assets/jars/spark-avro_2.12-3.1.1.jar,\
+                  s3://{{ env_var('AWS_ACCOUNT_ID') }}-{{ env_var('AWS_REGION') }}-data-assets/jars/hudi-utilities-bundle_2.12-0.12.0.jar,\
+                  s3://{{ env_var('AWS_ACCOUNT_ID') }}-{{ env_var('AWS_REGION') }}-data-assets/jars/hudi-spark3.1-bundle_2.12-0.12.0.jar"
+
+config:
+  send_anonymous_usage_stats: False

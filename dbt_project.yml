@@ -1,0 +1,42 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'demo'
+version: '1.0.0'
+config-version: 2
+
+vars:
+  INCREMENTAL_DAYS: "{{ env_var('INCREMENTAL_DAYS', 5) | int }}"
+  AWS_REGION: "{{ env_var('AWS_REGION') }}"
+  AWS_ACCOUNT_ID: "{{ env_var('AWS_ACCOUNT_ID') }}"
+  AWS_REFINED_BUCKET: "{{ env_var('AWS_REFINED_BUCKET') }}"
+
+# This setting configures which "profile" dbt-project uses for this project.
+profile: 'dbtbase'
+
+model-paths: ["models", "sources", "exposures"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt-project clean`
+  - "target"
+  - "dbt_packages"
+
+models:
+  demo:
+    refined:
+      +file_format: hudi
+      +materialized: incremental
+      +incremental_strategy: merge
+      +on_schema_change: append_new_columns
+      +tags:
+        - "refined"
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
